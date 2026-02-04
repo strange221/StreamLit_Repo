@@ -4,16 +4,6 @@ This project focuses on predicting the species of an Iris flower using machine l
 
 <img src="https://drive.google.com/uc?export=view&id=1Ghz3GwBaRuHZYgIb4ONzrFdEkADjl4Yb" alt="Iris Prediction Demo">
 
----
-
-## Prerequisites
-
-- Python 3.7 or higher
-- pip (Python package manager)
-- Virtual Environment (recommended)
-
----
-
 ## Installation Guide
 
 ### Step 1: Clone the Repository
