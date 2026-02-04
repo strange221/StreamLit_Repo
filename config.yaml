@@ -1,13 +1,12 @@
 # Configuration file for Iris Prediction Application
 
 # Model Configuration
+# To change the model name, simply modify the 'name' field below
+# The full filename will be automatically constructed as: {name}.{format}
 model:
-  name: "iris_model"
-  format: "pkl"
-  path: "models/"
-  
-# Model Filename (without extension, will be appended based on format)
-model_filename: "iris_model.pkl"
+  name: "iris_model"           # Change this to use a different model
+  format: "pkl"                # File format (pkl, h5, joblib, etc.)
+  path: "./"                   # Path where model files are stored
 
 # Feature Configuration
 features:

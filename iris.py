@@ -8,12 +8,12 @@ import os
 with open("config.yaml", "r") as config_file:
     config = yaml.safe_load(config_file)
 
-# Load model using config
-model_path = config["model_filename"]
-if not os.path.exists(model_path):
-    # Try to load from models directory if it doesn't exist in root
-    model_path = os.path.join(config["model"]["path"], config["model_filename"])
+# Construct model path from config
+model_config = config["model"]
+model_filename = f"{model_config['name']}.{model_config['format']}"
+model_path = os.path.join(model_config["path"], model_filename)
 
+# Load model
 with open(model_path, "rb") as f:
     model = pickle.load(f)
 
