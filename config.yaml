@@ -1,6 +1,10 @@
 # Configuration file for Iris Prediction Application
+# This file allows users to customize model training, testing, and prediction parameters
+# without modifying any Python code
 
-# Model Configuration
+# ============================================================================
+# MODEL CONFIGURATION
+# ============================================================================
 # To change the model name, simply modify the 'name' field below
 # The full filename will be automatically constructed as: {name}.{format}
 model:
@@ -8,7 +12,34 @@ model:
   format: "pkl"                # File format (pkl, h5, joblib, etc.)
   path: "./"                   # Path where model files are stored
 
-# Feature Configuration
+# ============================================================================
+# TRAINING & TESTING CONFIGURATION
+# ============================================================================
+# Customize parameters for model training and evaluation
+training:
+  test_size: 0.2               # Proportion of data to use for testing (0.0 to 1.0)
+  train_size: 0.8              # Proportion of data to use for training (0.0 to 1.0)
+  validation_split: 0.2        # Proportion of training data to use for validation
+  random_state: 42             # Random seed for reproducibility
+  shuffle: true                # Whether to shuffle data before splitting
+  stratify: true               # Whether to use stratified split (maintains class distribution)
+
+# ============================================================================
+# MODEL HYPERPARAMETERS
+# ============================================================================
+# SVM (Support Vector Machine) specific hyperparameters
+model_hyperparameters:
+  algorithm: "SVM"             # Machine learning algorithm (SVM, KNN, LogisticRegression, etc.)
+  kernel: "rbf"                # Kernel type for SVM (rbf, linear, poly, sigmoid)
+  C: 1.0                       # Regularization parameter (higher = stricter regularization)
+  gamma: "scale"               # Kernel coefficient (scale, auto, or numeric value)
+  probability: true            # Whether to enable probability estimates
+  random_state: 42             # Random seed for reproducibility
+
+# ============================================================================
+# FEATURE CONFIGURATION
+# ============================================================================
+# Input feature ranges and default values for the application
 features:
   sepal_length:
     min: 0.0
@@ -31,20 +62,45 @@ features:
     default: 0.2
     unit: "cm"
 
-# Application Configuration
+# ============================================================================
+# PREPROCESSING CONFIGURATION
+# ============================================================================
+# Data preprocessing and scaling parameters
+preprocessing:
+  scaler: "StandardScaler"     # Type of scaler (StandardScaler, MinMaxScaler, RobustScaler)
+  handle_missing: true         # Whether to handle missing values
+  missing_strategy: "mean"     # Strategy for missing values (mean, median, drop)
+  remove_outliers: false       # Whether to remove outliers
+  outlier_threshold: 3.0       # Standard deviations for outlier detection (IQR method)
+
+# ============================================================================
+# APPLICATION CONFIGURATION
+# ============================================================================
+# UI and application-level settings
 app:
   title: "Iris Flower Prediction Application"
   header: "Predict the species of Iris flower based on its features"
   subheader: "Please input the features of the Iris flower below:"
+  theme: "light"               # Theme (light or dark)
   
-# Prediction Configuration
+# ============================================================================
+# PREDICTION CONFIGURATION
+# ============================================================================
+# Settings for prediction behavior
 prediction:
   enabled: true
   button_text: "Predict Species"
   success_message: "The predicted species of the Iris flower is: {species}"
+  show_confidence: true        # Whether to show prediction confidence scores
+  confidence_threshold: 0.5    # Minimum confidence to make a prediction
 
-# Logging Configuration
+# ============================================================================
+# LOGGING CONFIGURATION
+# ============================================================================
+# Logging and debugging settings
 logging:
   enabled: false
   log_file: "logs/app.log"
-  log_level: "INFO"
+  log_level: "INFO"            # Log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+  log_predictions: false       # Whether to log all predictions
+
