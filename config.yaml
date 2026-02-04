@@ -1,0 +1,51 @@
+# Configuration file for Iris Prediction Application
+
+# Model Configuration
+model:
+  name: "iris_model"
+  format: "pkl"
+  path: "models/"
+  
+# Model Filename (without extension, will be appended based on format)
+model_filename: "iris_model.pkl"
+
+# Feature Configuration
+features:
+  sepal_length:
+    min: 0.0
+    max: 10.0
+    default: 5.0
+    unit: "cm"
+  sepal_width:
+    min: 0.0
+    max: 10.0
+    default: 3.5
+    unit: "cm"
+  petal_length:
+    min: 0.0
+    max: 10.0
+    default: 1.5
+    unit: "cm"
+  petal_width:
+    min: 0.0
+    max: 10.0
+    default: 0.2
+    unit: "cm"
+
+# Application Configuration
+app:
+  title: "Iris Flower Prediction Application"
+  header: "Predict the species of Iris flower based on its features"
+  subheader: "Please input the features of the Iris flower below:"
+  
+# Prediction Configuration
+prediction:
+  enabled: true
+  button_text: "Predict Species"
+  success_message: "The predicted species of the Iris flower is: {species}"
+
+# Logging Configuration
+logging:
+  enabled: false
+  log_file: "logs/app.log"
+  log_level: "INFO"

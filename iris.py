@@ -1,19 +1,55 @@
 import streamlit as st
 import pickle
 import pandas as pd
+import yaml
+import os
 
-with open("model.pkl", "rb") as f:
+# Load configuration
+with open("config.yaml", "r") as config_file:
+    config = yaml.safe_load(config_file)
+
+# Load model using config
+model_path = config["model_filename"]
+if not os.path.exists(model_path):
+    # Try to load from models directory if it doesn't exist in root
+    model_path = os.path.join(config["model"]["path"], config["model_filename"])
+
+with open(model_path, "rb") as f:
     model = pickle.load(f)
 
+# Get configuration values
+app_config = config["app"]
+features_config = config["features"]
 
-st.title("Iris Flower Prediction Application")
-st.header("Predict the species of Iris flower based on its features")
-st.subheader("Please input the features of the Iris flower below:")
-sepal_length = st.number_input("Sepal Length (cm):", 0.0, 10.0, 5.0)
-sepal_width = st.number_input("Sepal Width (cm):", 0.0, 10.0, 3.5)
-petal_length = st.number_input("Petal Length (cm):", 0.0, 10.0, 1.5)
-petal_width = st.number_input("Petal Width (cm):", 0.0, 10.0, 0.2)
-if st.button("Predict Species"):
+st.title(app_config["title"])
+st.header(app_config["header"])
+st.subheader(app_config["subheader"])
+
+sepal_length = st.number_input(
+    "Sepal Length (cm):", 
+    features_config["sepal_length"]["min"], 
+    features_config["sepal_length"]["max"], 
+    features_config["sepal_length"]["default"]
+)
+sepal_width = st.number_input(
+    "Sepal Width (cm):", 
+    features_config["sepal_width"]["min"], 
+    features_config["sepal_width"]["max"], 
+    features_config["sepal_width"]["default"]
+)
+petal_length = st.number_input(
+    "Petal Length (cm):", 
+    features_config["petal_length"]["min"], 
+    features_config["petal_length"]["max"], 
+    features_config["petal_length"]["default"]
+)
+petal_width = st.number_input(
+    "Petal Width (cm):", 
+    features_config["petal_width"]["min"], 
+    features_config["petal_width"]["max"], 
+    features_config["petal_width"]["default"]
+)
+if st.button(config["prediction"]["button_text"]):
     input_data = pd.DataFrame(
         {
             "sepal_length": [sepal_length],
@@ -24,5 +60,6 @@ if st.button("Predict Species"):
     )
     prediction = model.predict(input_data)
     species = prediction[0]
-    st.success(f"The predicted species of the Iris flower is: {species}")
+    success_msg = config["prediction"]["success_message"].format(species=species)
+    st.success(success_msg)
 
