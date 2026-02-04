@@ -226,12 +226,141 @@ SVM Configuration:
 2. Features standardized using StandardScaler
 3. SVM model trained on 80% of data
 4. Model validated on 20% of data
-5. Serialized and saved as `model.pkl` for deployment
+5. Serialized and saved as `iris_model.pkl` for deployment
 
 ### Model File
-- **Filename**: `model.pkl`
+- **Filename**: `iris_model.pkl` (configurable in `config.yaml`)
 - **Format**: Pickle (Python object serialization)
 - **Size**: ~5 KB
 - **Load Time**: <100ms
+
+---
+
+## Configuration System
+
+### Using config.yaml
+
+This project uses a comprehensive configuration system that allows you to customize all aspects of the application without modifying the code.
+
+### Configuration File Structure
+
+**config.yaml** contains the following sections:
+
+#### 1. Model Configuration
+```yaml
+model:
+  name: "iris_model"           # Change model name here
+  format: "pkl"                # File format
+  path: "./"                   # Model file path
+```
+
+#### 2. Training & Testing Configuration
+```yaml
+training:
+  test_size: 0.2               # Proportion for testing (20%)
+  train_size: 0.8              # Proportion for training (80%)
+  validation_split: 0.2        # Validation data proportion
+  random_state: 42             # Seed for reproducibility
+  shuffle: true                # Shuffle data
+  stratify: true               # Maintain class distribution
+```
+
+#### 3. Model Hyperparameters
+```yaml
+model_hyperparameters:
+  algorithm: "SVM"             # Algorithm (SVM, KNN, LogisticRegression, etc.)
+  kernel: "rbf"                # SVM kernel type
+  C: 1.0                       # Regularization parameter
+  gamma: "scale"               # Kernel coefficient
+  probability: true            # Enable probability estimates
+  random_state: 42             # Random seed
+```
+
+#### 4. Data Preprocessing
+```yaml
+preprocessing:
+  scaler: "StandardScaler"     # Scaler type
+  handle_missing: true         # Handle missing values
+  missing_strategy: "mean"     # Strategy (mean, median, drop)
+  remove_outliers: false       # Remove outliers
+  outlier_threshold: 3.0       # Outlier detection threshold
+```
+
+#### 5. Feature Configuration
+```yaml
+features:
+  sepal_length:
+    min: 0.0
+    max: 10.0
+    default: 5.0
+    unit: "cm"
+  # ... other features
+```
+
+### How to Use Configuration
+
+**To change model training parameters:**
+
+1. Open `config.yaml` in a text editor
+2. Modify the desired parameters in the `training` or `model_hyperparameters` sections
+3. Run the training script: `python train_model.py`
+4. The new trained model will be saved with the new parameters
+
+**Example: Change test size to 30%**
+```yaml
+training:
+  test_size: 0.3               # Change from 0.2 to 0.3
+```
+
+**Example: Switch to a different algorithm**
+```yaml
+model_hyperparameters:
+  algorithm: "RandomForest"    # Change from "SVM" to "RandomForest"
+  n_estimators: 100            # Add RandomForest specific parameters
+```
+
+**Example: Change model name**
+```yaml
+model:
+  name: "my_custom_model"      # Iris prediction app will use "my_custom_model.pkl"
+```
+
+### Training a New Model
+
+Use the `train_model.py` script to train a new model with parameters from `config.yaml`:
+
+```bash
+python train_model.py
+```
+
+This script will:
+1. Load the Iris dataset
+2. Apply preprocessing according to `config.yaml`
+3. Split data using the specified test/train sizes
+4. Create and train the model with specified hyperparameters
+5. Evaluate the model and print performance metrics
+6. Save the trained model to the configured path with the configured name
+
+### Supported Algorithms
+
+The following algorithms are supported in `config.yaml`:
+
+| Algorithm | Config Name | Key Parameters |
+|-----------|-------------|-----------------|
+| Support Vector Machine | `SVM` | kernel, C, gamma, probability |
+| K-Nearest Neighbors | `KNN` | n_neighbors |
+| Logistic Regression | `LogisticRegression` | max_iter |
+| Decision Tree | `DecisionTree` | max_depth |
+| Random Forest | `RandomForest` | n_estimators, max_depth |
+
+### Supported Scalers
+
+The following scalers are supported in `config.yaml`:
+
+| Scaler | Config Name |
+|--------|-------------|
+| Standard Scaling (Z-score) | `StandardScaler` |
+| Min-Max Scaling | `MinMaxScaler` |
+| Robust Scaling | `RobustScaler` |
 
 ---
