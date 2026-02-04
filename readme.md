@@ -105,11 +105,3 @@ When you're done, deactivate the virtual environment:
 ```bash
 deactivate
 ```
-
----
-
-## Author
-
-Created as a machine learning project for Iris species classification.
-
----
